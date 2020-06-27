@@ -30,6 +30,15 @@ func reader(conn *websocket.Conn) {
 	}
 }
 
+func serveWs(w http.ResponseWriter, r *http.Request) {
+	fmt.Println(r.Host)
+	ws, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Prinln(err)
+	}
+	reader(ws)
+}
+
 func setupRoutes(){
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request){
 		fmt.Fprintf(w, "Simple Server")
